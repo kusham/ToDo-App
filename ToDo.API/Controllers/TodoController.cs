@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using ToDo.API.Dtos;
 using ToDo.API.Models;
 using ToDo.API.Serives;
 
@@ -36,6 +37,7 @@ namespace ToDo.API.Controllers
                     return Unauthorized("User not authenticated.");
                 }
                 var todos = await _todoService.GetAllByUserIdAsync(userId);
+                //var todos = await _todoService.GetAllAsync();
                 return Ok(todos);
             }
             catch (Exception ex)
@@ -77,9 +79,18 @@ namespace ToDo.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Todo>> Create(Todo todo)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (todo.UserId != userId)
+                {
+                    _logger.LogWarning("Authenticated User and the ID given does not match");
+                    return Forbid(); 
+                }
                 todo.UserId = userId;
                 await _todoService.CreateAsync(todo);
                 return CreatedAtAction(nameof(GetById), new { id = todo.Id }, todo);
@@ -117,7 +128,12 @@ namespace ToDo.API.Controllers
                     _logger.LogWarning("User with id {UserId} does not own todo with id {TodoId}.", userId, id);
                     return Forbid(); // User does not own this todo
                 }
-                await _todoService.UpdateAsync(todo);
+                existingTodo.Title = todo.Title;
+                existingTodo.Description = todo.Description;
+                existingTodo.DueDate = todo.DueDate;
+                existingTodo.Status = todo.Status;
+
+                await _todoService.UpdateAsync(existingTodo);
                 return NoContent();
             }
             catch (Exception ex)
@@ -159,14 +175,14 @@ namespace ToDo.API.Controllers
             }
         }
 
-        // GET: api/Todos/filter
-        [HttpGet("filter")]
-        public async Task<IActionResult> GetAll(string search, TodoStatus? status, DateTime? dueDate)
+        // GET: api/Todo/filter
+        [HttpPost("filter")]
+        public async Task<IActionResult> GetAll([FromBody] FilterDto filter)
         {
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var todos = await _todoService.GetAllBySearchAsync(userId, search, status, dueDate);
+                var todos = await _todoService.GetAllBySearchAsync(userId, filter.Text, filter.Status, filter.DueDate);
                 return Ok(todos);
             }
             catch (Exception ex)

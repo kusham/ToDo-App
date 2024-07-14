@@ -12,10 +12,16 @@ namespace ToDo.API.Data.Seed
                 new User
                 {
                     Id = "1",
+                    FirstName = "John",
+                    LastName = "Doe",
+                    //Username = "john.doe"
                 },
                 new User
                 {
                     Id = "2",
+                    FirstName = "Jane",
+                    LastName = "Doe",
+                    //Username = "jane.doe"
                 }
             );
 

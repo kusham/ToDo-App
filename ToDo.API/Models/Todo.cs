@@ -17,7 +17,7 @@ namespace ToDo.API.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? DueDate { get; set; }
         public TodoStatus Status { get; set; } = TodoStatus.Pending;
-
+        [Required]
         public required string UserId { get; set; }
         [JsonIgnore]
         public User? User { get; set; }
@@ -26,6 +26,7 @@ namespace ToDo.API.Models
     public enum TodoStatus
     {
         Pending = 0,
-        Completed = 1
+        InProgress = 1,
+        Completed = 2
     }
 }

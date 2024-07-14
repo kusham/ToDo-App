@@ -37,6 +37,8 @@ namespace ToDo.API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false),
+                    FirstName = table.Column<string>(type: "longtext", nullable: false),
+                    LastName = table.Column<string>(type: "longtext", nullable: false),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
@@ -195,11 +197,11 @@ namespace ToDo.API.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "b7cd7ae9-cc81-4c7b-9cc4-715f106d776f", null, false, false, null, null, null, null, null, false, "2bbaf08e-9e38-4493-ad9d-9c53bcc15806", false, null },
-                    { "2", 0, "bfd58854-eb7d-47d7-9711-04923496c3c0", null, false, false, null, null, null, null, null, false, "cdfc5603-34b4-4474-bf62-2010f5cbd06c", false, null }
+                    { "1", 0, "e9f5aed6-1a27-4b82-b624-f5ac7a2e0fd8", null, false, "John", "Doe", false, null, null, null, null, null, false, "3571806f-6f47-4492-b2b0-68df0bc0f29e", false, null },
+                    { "2", 0, "240208be-11ba-489c-9fe1-0fb034190c6c", null, false, "Jane", "Doe", false, null, null, null, null, null, false, "530ac0ff-8627-41f4-9ba9-a159fc670b02", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -207,10 +209,10 @@ namespace ToDo.API.Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "DueDate", "Status", "Title", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("17635a80-5917-4aec-af8d-e015cc75cd42"), new DateTime(2024, 7, 11, 3, 50, 48, 446, DateTimeKind.Local).AddTicks(8361), "Learn ASP.NET Core with EF Core", null, 0, "Learn ASP.NET Core", "1" },
-                    { new Guid("9cc9391f-daf7-4436-8266-014f1a105899"), new DateTime(2024, 7, 11, 3, 50, 48, 446, DateTimeKind.Local).AddTicks(8384), "Learn React with ASP.NET Core", null, 1, "Learn React", "1" },
-                    { new Guid("bfe394fc-e0b1-479d-aa21-b1e4e01a9209"), new DateTime(2024, 7, 11, 3, 50, 48, 446, DateTimeKind.Local).AddTicks(8381), "Learn Angular with ASP.NET Core", null, 0, "Learn Angular", "1" },
-                    { new Guid("cc41ecd0-7a46-45f4-a9bd-e46ef4dfdaea"), new DateTime(2024, 7, 11, 3, 50, 48, 446, DateTimeKind.Local).AddTicks(8387), "Learn Vue with ASP.NET Core", null, 0, "Learn Vue", "2" }
+                    { new Guid("2f88e113-6570-4dbc-8dc3-9bf5dfc28496"), new DateTime(2024, 7, 14, 3, 4, 6, 813, DateTimeKind.Local).AddTicks(4640), "Learn ASP.NET Core with EF Core", null, 0, "Learn ASP.NET Core", "1" },
+                    { new Guid("428dad47-07d4-46d5-9a1b-c946ba50c129"), new DateTime(2024, 7, 14, 3, 4, 6, 813, DateTimeKind.Local).AddTicks(4663), "Learn Angular with ASP.NET Core", null, 0, "Learn Angular", "1" },
+                    { new Guid("5730ed23-09d0-4164-bee8-d93bc460e480"), new DateTime(2024, 7, 14, 3, 4, 6, 813, DateTimeKind.Local).AddTicks(4666), "Learn React with ASP.NET Core", null, 1, "Learn React", "1" },
+                    { new Guid("c68a40f7-058d-409c-bfcf-008402f7b130"), new DateTime(2024, 7, 14, 3, 4, 6, 813, DateTimeKind.Local).AddTicks(4668), "Learn Vue with ASP.NET Core", null, 0, "Learn Vue", "2" }
                 });
 
             migrationBuilder.CreateIndex(

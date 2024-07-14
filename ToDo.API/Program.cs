@@ -1,3 +1,5 @@
+using Comman;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -6,6 +8,7 @@ using ToDo.API.Data;
 using ToDo.API.Models;
 using ToDo.API.Repository;
 using ToDo.API.Serives;
+using ToDo.API.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,30 +17,40 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builders =>
+        {
+            builders.WithOrigins(builder.Configuration["profiles:TodoAPI:clientUrl"]!)
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 
 // Configure Authentication
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-    .AddCookie(IdentityConstants.ApplicationScheme)
-    .AddJwtBearer(IdentityConstants.BearerScheme, options => {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(builder.Configuration["Jwt:Key"]!))
-        };
-    });
-
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 // Add Authorization
 builder.Services.AddAuthorization();
+
 
 builder.Services.AddIdentityCore<User>(options => {
     options.Password.RequireDigit = true;
@@ -71,6 +84,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<ITodoService, TodoService>();
 
+builder.Services.AddScoped<CustomSignInManager>();
+
 var port = builder.Configuration["profiles:TodoAPI:applicationUrl"];
 
 var app = builder.Build();
@@ -84,7 +99,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-
+// Enable CORS
+app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
 app.UseRouting();

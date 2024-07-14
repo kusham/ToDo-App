@@ -11,7 +11,7 @@ using ToDo.API.Data;
 namespace ToDo.API.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240710222049_InitialMigration")]
+    [Migration("20240713213407_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -191,8 +191,8 @@ namespace ToDo.API.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("17635a80-5917-4aec-af8d-e015cc75cd42"),
-                            CreatedAt = new DateTime(2024, 7, 11, 3, 50, 48, 446, DateTimeKind.Local).AddTicks(8361),
+                            Id = new Guid("2f88e113-6570-4dbc-8dc3-9bf5dfc28496"),
+                            CreatedAt = new DateTime(2024, 7, 14, 3, 4, 6, 813, DateTimeKind.Local).AddTicks(4640),
                             Description = "Learn ASP.NET Core with EF Core",
                             Status = 0,
                             Title = "Learn ASP.NET Core",
@@ -200,8 +200,8 @@ namespace ToDo.API.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("bfe394fc-e0b1-479d-aa21-b1e4e01a9209"),
-                            CreatedAt = new DateTime(2024, 7, 11, 3, 50, 48, 446, DateTimeKind.Local).AddTicks(8381),
+                            Id = new Guid("428dad47-07d4-46d5-9a1b-c946ba50c129"),
+                            CreatedAt = new DateTime(2024, 7, 14, 3, 4, 6, 813, DateTimeKind.Local).AddTicks(4663),
                             Description = "Learn Angular with ASP.NET Core",
                             Status = 0,
                             Title = "Learn Angular",
@@ -209,8 +209,8 @@ namespace ToDo.API.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9cc9391f-daf7-4436-8266-014f1a105899"),
-                            CreatedAt = new DateTime(2024, 7, 11, 3, 50, 48, 446, DateTimeKind.Local).AddTicks(8384),
+                            Id = new Guid("5730ed23-09d0-4164-bee8-d93bc460e480"),
+                            CreatedAt = new DateTime(2024, 7, 14, 3, 4, 6, 813, DateTimeKind.Local).AddTicks(4666),
                             Description = "Learn React with ASP.NET Core",
                             Status = 1,
                             Title = "Learn React",
@@ -218,8 +218,8 @@ namespace ToDo.API.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cc41ecd0-7a46-45f4-a9bd-e46ef4dfdaea"),
-                            CreatedAt = new DateTime(2024, 7, 11, 3, 50, 48, 446, DateTimeKind.Local).AddTicks(8387),
+                            Id = new Guid("c68a40f7-058d-409c-bfcf-008402f7b130"),
+                            CreatedAt = new DateTime(2024, 7, 14, 3, 4, 6, 813, DateTimeKind.Local).AddTicks(4668),
                             Description = "Learn Vue with ASP.NET Core",
                             Status = 0,
                             Title = "Learn Vue",
@@ -245,6 +245,14 @@ namespace ToDo.API.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -295,22 +303,26 @@ namespace ToDo.API.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b7cd7ae9-cc81-4c7b-9cc4-715f106d776f",
+                            ConcurrencyStamp = "e9f5aed6-1a27-4b82-b624-f5ac7a2e0fd8",
                             EmailConfirmed = false,
+                            FirstName = "John",
+                            LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2bbaf08e-9e38-4493-ad9d-9c53bcc15806",
+                            SecurityStamp = "3571806f-6f47-4492-b2b0-68df0bc0f29e",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bfd58854-eb7d-47d7-9711-04923496c3c0",
+                            ConcurrencyStamp = "240208be-11ba-489c-9fe1-0fb034190c6c",
                             EmailConfirmed = false,
+                            FirstName = "Jane",
+                            LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cdfc5603-34b4-4474-bf62-2010f5cbd06c",
+                            SecurityStamp = "530ac0ff-8627-41f4-9ba9-a159fc670b02",
                             TwoFactorEnabled = false
                         });
                 });
